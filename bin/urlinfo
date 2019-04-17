@@ -3,5 +3,28 @@
 var urlinfo  = require("../")
 var minimist = require("minimist")
 var argv     = minimist(process.argv.slice(2))
+var cfg      = require("../package.json")
 
-console.log(argv)
+if (argv.version || argv.v || argv["_"][0] === "version") {
+  console.log(cfg.version)
+  process.exit()
+}
+
+if (argv.help || argv.h || argv["_"].length == 0) {
+  console.log()
+  console.log("  urlinfo server (v" + cfg.version + ") - service for storing and fetching url information.")
+  console.log()
+  console.log("  Usage:")
+  console.log("    urlinfo <file|domain>")
+  console.log()
+  console.log("  Options:")
+  console.log("    -v, --version       show the version")
+  console.log("    -h, --help          show this help message")
+  console.log("    -h, --port          specify port for server")
+  console.log()
+  console.log("  Examples:")
+  console.log("    urlinfo store.db --port 9001                  starts server in storage mode")
+  console.log("    urlinfo https://localhost:9001 --port 9002    starts server in proxy mode")
+  console.log()
+  process.exit()
+}
