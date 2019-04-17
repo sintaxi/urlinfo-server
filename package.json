@@ -1,12 +1,14 @@
 {
-  "name": "urlinfo",
+  "name": "urlinfo-server",
   "version": "0.1.0",
   "description": "url information for fighting abuse etc.",
   "main": "./src/index.js",
   "scripts": {
     "test": "mocha test"
   },
-  "bin": "./bin/urlinfo",
+  "bin": {
+    "urlinfo": "./bin/urlinfo"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sintaxi/urlinfo-server.git"

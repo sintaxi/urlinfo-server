@@ -8,7 +8,7 @@
 
 ### Installation
 
-    npm install -g urlinfo
+    npm install -g urlinfo-server
 
 ### Usage (work in progress)
   
