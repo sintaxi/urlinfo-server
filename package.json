@@ -1,0 +1,22 @@
+{
+  "name": "urlinfo-server",
+  "version": "0.1.0",
+  "description": "url information for fighting abuse etc.",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sintaxi/urlinfo-server.git"
+  },
+  "author": "Brock Whitten <brock@sintaxi.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sintaxi/urlinfo-server/issues"
+  },
+  "homepage": "https://github.com/sintaxi/urlinfo-server#readme",
+  "dependencies": {
+    "mocha": "^6.1.3"
+  }
+}
