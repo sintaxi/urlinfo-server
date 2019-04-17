@@ -1,3 +1,7 @@
 #!/usr/bin/env node
 
-var urlinfo = require("../")
+var urlinfo  = require("../")
+var minimist = require("minimist")
+var argv     = minimist(process.argv.slice(2))
+
+console.log(argv)

@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/sintaxi/urlinfo-server#readme",
   "dependencies": {
+    "minimist": "^1.2.0",
     "mocha": "^6.1.3",
     "should": "^13.2.3",
     "thug": "^0.4.3"
