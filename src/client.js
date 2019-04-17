@@ -4,6 +4,8 @@ var records = {} // temporary memory store
 
 module.exports = function(config){
 
+  store = new Thug()
+  
   store.constructor.prototype.write = function(identifier, record, callback){
     records[identifier] = record
     return callback(record)
