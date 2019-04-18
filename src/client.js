@@ -4,7 +4,8 @@ var records = {} // temporary memory store
 
 module.exports = function(config){
 
-  var store = new Thug()
+  var store    = new Thug()
+  store.config = config || {}
 
   store.constructor.prototype.write = function(identifier, record, callback){
     records[identifier] = record

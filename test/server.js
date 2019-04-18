@@ -4,6 +4,8 @@ var urlinfo = require("../")
 
 describe("server", function(){
 
+  var server;
+
   it("should create client", function(done){
     client = urlinfo.createClient()
     should.exist(client)
@@ -17,8 +19,14 @@ describe("server", function(){
   })
 
   it("should be able to set first record", function(done){
-    client.listen(function(){
+    server = client.listen(function(){
       done()
+    })
+  })
+
+  after(function(done){
+    server.close(function(){
+      done()  
     })
   })
 
