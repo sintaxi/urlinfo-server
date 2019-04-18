@@ -1,6 +1,7 @@
 
-var should  = require("should")
-var urlinfo = require("../")
+var should     = require("should")
+var urlinfo    = require("../")
+var superagent = require("superagent")
 
 describe("server", function(){
 
@@ -18,10 +19,32 @@ describe("server", function(){
     done()
   })
 
-  it("should be able to set first record", function(done){
+  it("should be able to start client", function(done){
     server = client.listen(function(){
       done()
     })
+  })
+
+  it("should be able to set record", function(done){
+    superagent
+      .put('/foo')
+      .send({ val: "foo" })
+      .set('accept', 'json')
+      .end((err, res) => {
+        res.status.should.eql(201)
+        should.not.exist(err)
+        done()
+      })
+  })
+
+  it("should be able to get record", function(done){
+    superagent
+      .get('/foo')
+      .set('accept', 'json')
+      .end((err, res) => {
+        res.status.should.eql(200)
+        done()
+      })
   })
 
   after(function(done){
