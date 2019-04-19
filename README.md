@@ -8,21 +8,25 @@
 
 ### Installation
 
-    npm install -g urlinfo-server
+  npm install -g urlinfo-server
 
 ### Usage (work in progress)
+
   
-    urlinfo (v0.1.0) - service for storing and fetching url information.
+  urlinfo - 0.3.0
+  Service for storing and fetching url information.
 
-    Usage:
-      urlinfo <file|domain>
+  Commands:
+    urlinfo server <file>               http server (stores records in database)
+    urlinfo proxy <domain>              http server (proxies records to other urlinfo API)
 
-    Options:
-      -v, --version       show the version
-      -h, --help          show this help message
-      -h, --port          specify port for server
+  Options:
+    -p, --port (9001)                   specify port for server
+    -h, --help                          outputs this help message
+    -v, --version                       outputs version
 
-    Examples:
-      urlinfo store.db --port 9001                  starts server in storage mode
-      urlinfo https://localhost:9001 --port 9002    starts server in proxy mode
+  Examples:
+    urlinfo server store.db             starts server on port 9001. saves state in store.db
+    urlinfo proxy example.com -p 9002   starts server on port 9002. proxies req. to example.com
+
 
