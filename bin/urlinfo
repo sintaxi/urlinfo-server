@@ -5,26 +5,84 @@ var minimist = require("minimist")
 var argv     = minimist(process.argv.slice(2))
 var cfg      = require("../package.json")
 
+
+/***
+ *
+ * urlinfo version
+ *
+ */
+
 if (argv.version || argv.v || argv["_"][0] === "version") {
   console.log(cfg.version)
   process.exit()
 }
 
+
+/***
+ *
+ * urlinfo help
+ *
+ */
+
 if (argv.help || argv.h || argv["_"].length == 0) {
   console.log()
-  console.log("  urlinfo server (v" + cfg.version + ") - service for storing and fetching url information.")
+  console.log("  urlinfo - " + cfg.version)
+  console.log("  Service for storing and fetching url information.")
   console.log()
-  console.log("  Usage:")
-  console.log("    urlinfo <file|domain>")
+  console.log("  Commands:")
+  console.log("    urlinfo server <file>               http server (stores records in database)")
+  console.log("    urlinfo proxy <domain>              http server (proxies records to other urlinfo API)")
   console.log()
   console.log("  Options:")
-  console.log("    -v, --version       show the version")
-  console.log("    -h, --help          show this help message")
-  console.log("    -h, --port          specify port for server")
+  console.log("    -p, --port (9001)                   specify port for server")
+  console.log("    -h, --help                          outputs this help message")
+  console.log("    -v, --version                       outputs version")
   console.log()
   console.log("  Examples:")
-  console.log("    urlinfo store.db --port 9001                  starts server in storage mode")
-  console.log("    urlinfo https://localhost:9001 --port 9002    starts server in proxy mode")
+  console.log("    urlinfo server store.db             starts server on port 9001. saves state in store.db")
+  console.log("    urlinfo proxy example.com -p 9002   starts server on port 9002. proxies req. to example.com")
   console.log()
   process.exit()
+}
+
+
+/***
+ *
+ * urlinfo server path/to/file.db
+ *
+ */
+
+if (argv["_"].length > 0 && argv["_"][0] === "server") {
+  if (argv["_"][1]){
+    var port = argv.port || argv.p || 9000
+    urlinfo.createClient(argv).server.listen(port, function(){
+      console.log("urlinfo -", cfg.version)
+      console.log("Server listening on port", port, "...")
+    })
+  } else {
+    console.log("Path to database file required.")
+    console.log("Example: `urlinfo server ./store.db`")
+    process.exit()
+  }
+}
+
+
+/***
+ *
+ * urlinfo proxy localhost:9000
+ *
+ */
+
+if (argv["_"].length > 0 && argv["_"][0] === "proxy") {
+  if (argv["_"][1]){
+    var port = argv.port || argv.p || 9000
+    urlinfo.createClient(argv).server.listen(port, function(){
+      console.log("urlinfo -", cfg.version)
+      console.log("Proxy listening on port", port, "...")
+    })
+  } else {
+    console.log("Domain to API required.")
+    console.log("Example: `urlinfo proxy https://example.com`")
+    process.exit()
+  }
 }
