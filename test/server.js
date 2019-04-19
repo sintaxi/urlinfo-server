@@ -15,19 +15,19 @@ describe("server", function(){
 
   it("should have listen function on client", function(done){
     client = urlinfo.createClient()
-    client.should.have.property("listen")
+    client.should.have.property("server")
     done()
   })
 
   it("should be able to start client", function(done){
-    server = client.listen(function(){
+    server = client.server.listen(9000, function(){
       done()
     })
   })
 
   it("should be able to set record", function(done){
     superagent
-      .put('/foo')
+      .put('localhost:9000/foo')
       .send({ val: "foo" })
       .set('accept', 'json')
       .end((err, res) => {
@@ -39,7 +39,7 @@ describe("server", function(){
 
   it("should be able to get record", function(done){
     superagent
-      .get('/foo')
+      .get('localhost:9000/foo')
       .set('accept', 'json')
       .end((err, res) => {
         res.status.should.eql(200)
