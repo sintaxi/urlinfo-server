@@ -42,7 +42,7 @@ Using library to fetch records from disk.
 var disk = urlinfo.createClient({ disk: __dirname + "/store.db" })
 
 // fetch record
-disk.set("foo.com", function(err, record){
+disk.set("foo.com", {}, function(err, record){
   // returns record
 })
 
@@ -67,7 +67,7 @@ To fetch records from our http server all we have to do is instantiate a client 
 var network = urlinfo.createClient({ network: "https://localhost:9000" })
 
 // fetch record
-network.set("foo.com", function(err, record){
+network.set("foo.com", {}, function(err, record){
   // returns record
 })
 
