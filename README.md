@@ -39,15 +39,15 @@ Using `urlinfo` as a client library has the benefits of a built in LRU cache. It
 Using library to fetch records from disk.
 
 ```javascript
-var client0 = urlinfo.createClient({ source: "https://sfo.example.com" })
+var disk = urlinfo.createClient({ disk: __dirname + "/store.db" })
 
 // fetch record
-client0.set("foo.com", function(err, record){
+disk.set("foo.com", function(err, record){
   // returns record
 })
 
 // get record
-client0.get("foo.com", function(record){
+disk.get("foo.com", function(record){
   // returns record or null
 })
 
@@ -56,7 +56,7 @@ client0.get("foo.com", function(record){
 Each client has a built in `listen()` method for standing up an http server in front of the client.
 
 ```javascript
-client0.listen(9000, function(err){
+disk.listen(9000, function(err){
   consolelog("server is listening on port 9000")
 })
 ```
@@ -64,15 +64,15 @@ client0.listen(9000, function(err){
 To fetch records from our http server all we have to do is instantiate a client that will speak to that endpoint.
 
 ```javascript
-var client1 = urlinfo.createClient({ source: "https://localhost:9000" })
+var network = urlinfo.createClient({ network: "https://localhost:9000" })
 
 // fetch record
-client1.set("foo.com", function(err, record){
+network.set("foo.com", function(err, record){
   // returns record
 })
 
 // get record
-client1.get("foo.com", function(record){
+network.get("foo.com", function(record){
   // returns record or null
 })
 
@@ -81,7 +81,7 @@ client1.get("foo.com", function(record){
 If we wish to do so we could have this client listen on another port so it can be a server while proxying call through to another endpoint.
 
 ```javascript
-client1.listen(9001, function(err){
+network.listen(9001, function(err){
   consolelog("server is listening on port 9001")
 })
 ```
