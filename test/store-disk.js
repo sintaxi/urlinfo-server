@@ -1,14 +1,16 @@
 
 
 var should     = require("should")
-var store      = require("../src/store-disk.js")
+var store      = require("../src/store-disk")
+var exec       = require("child_process").exec
 
 describe("store-disk", function(){
 
   var client;
+  var storepath = __dirname + "/store.db"
 
   it("should exist storeDisk", function(done){
-    client = storeDisk("./store.db")
+    client = store(storepath)
     should.exist(client)
     done()
   })
@@ -43,6 +45,12 @@ describe("store-disk", function(){
   it("should be able to get second record", function(done){
     client.get("example.com/bar", function(record){
       record.should.equal("bar")
+      done()
+    })
+  })
+
+  after(function(done){
+    exec("rm -rf " + storepath, function() {
       done()
     })
   })
