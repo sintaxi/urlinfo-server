@@ -22,14 +22,14 @@ describe("store-disk", function(){
   })
 
   it("should be able to set first record", function(done){
-    client.set("example.com/foo", "foo", function(error, record){
+    client.set("example.com/foo", { "name": "foo" }, function(error, record){
       should.not.exist(error)
       done()  
     })
   })
 
   it("should be able to set second record", function(done){
-    client.set("example.com/bar", "bar", function(error, record){
+    client.set("example.com/bar", { "name": "bar" }, function(error, record){
       should.not.exist(error)
       done()  
     })
@@ -37,14 +37,16 @@ describe("store-disk", function(){
 
   it("should be able to get first record", function(done){
     client.get("example.com/foo", function(record){
-      record.should.equal("foo")
+      record.should.have.property("name")
+      record.name.should.be.equal("foo")
       done()
     })
   })
 
   it("should be able to get second record", function(done){
     client.get("example.com/bar", function(record){
-      record.should.equal("bar")
+      record.should.have.property("name")
+      record.name.should.be.equal("bar")
       done()
     })
   })

@@ -10,8 +10,14 @@ module.exports = function(storepath){
   var store    = new Thug({ 
     locals: { db: db },
     filters: {
+      // database wants a string so we serialize
+      beforeWrite:[function(record, next){
+        next(JSON.stringify(record))
+      }],
+
+      // database returns a string so we parse
       out : [function(record, next){
-        next(record.toString())
+        next(JSON.parse(record))
       }]
     } 
   })
