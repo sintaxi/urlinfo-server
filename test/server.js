@@ -28,11 +28,12 @@ describe("server", function(){
   it("should be able to set record", function(done){
     superagent
       .put('localhost:9000/foo')
-      .send({ val: "foo" })
+      .send({ name: "foo" })
       .set('accept', 'json')
       .end((err, res) => {
-        res.status.should.eql(201)
         should.not.exist(err)
+        res.status.should.eql(201)
+        res.body.name.should.equal("foo")
         done()
       })
   })
@@ -43,6 +44,7 @@ describe("server", function(){
       .set('accept', 'json')
       .end((err, res) => {
         res.status.should.eql(200)
+        res.body.name.should.equal("foo")
         done()
       })
   })
