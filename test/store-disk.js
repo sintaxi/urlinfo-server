@@ -51,6 +51,20 @@ describe("store-disk", function(){
     })
   })
 
+  it("should be able to delete second record", function(done){
+    client.del("example.com/bar", function(errors){
+      should.not.exist(errors)
+      done()
+    })
+  })
+
+  it("should no longer able to get second record", function(done){
+    client.get("example.com/bar", function(record){
+      should.not.exist(record)
+      done()
+    })
+  })
+
   after(function(done){
     exec("rm -rf " + storepath, function() {
       done()

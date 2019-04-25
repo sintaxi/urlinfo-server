@@ -36,7 +36,7 @@ module.exports = function(storepath){
     
   }
 
-  store.constructor.prototype.remove = function(identifier, callback){
+  store.constructor.prototype.remove = function(identifier, record, callback){
     this.locals.db.del(identifier, function (err) {
       if (err) return callback(err)
       return callback(null)
