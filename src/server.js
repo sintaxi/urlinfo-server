@@ -33,6 +33,17 @@ module.exports = function(store){
           rsp.end()
         }
       })
+
+    } else if(req.method == "DELETE"){
+      store.del(req.url, function(errors){
+        if (errors) {
+          rsp.writeHead(410, { 'Content-Type': 'application/json' })
+          rsp.end(JSON.stringify(errors))
+        } else {
+          rsp.writeHead(204)
+          rsp.end()
+        }
+      })
     }
   })
   

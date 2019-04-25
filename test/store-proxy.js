@@ -41,6 +41,8 @@ describe("store-proxy", function(){
   it("should be able to set second record", function(done){
     client.set("example.com/bar", { "name": "bar" }, function(error, record){
       should.not.exist(error)
+      record.should.have.property("name")
+      record.name.should.be.equal("bar")
       done()  
     })
   })
@@ -57,6 +59,20 @@ describe("store-proxy", function(){
     client.get("example.com/bar", function(record){
       record.should.have.property("name")
       record.name.should.be.equal("bar")
+      done()
+    })
+  })
+
+  it("should be able to delete second record", function(done){
+    client.del("example.com/bar", function(errors){
+      should.not.exist(errors)
+      done()
+    })
+  })
+
+  it("should no longer able to get second record", function(done){
+    client.get("example.com/bar", function(record){
+      should.not.exist(record)
       done()
     })
   })

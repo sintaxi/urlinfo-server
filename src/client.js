@@ -16,7 +16,7 @@ module.exports = function(config){
     return callback(records[identifier])
   }
 
-  store.constructor.prototype.remove = function(identifier, callback){
+  store.constructor.prototype.remove = function(identifier, record, callback){
     delete records[identifier]
     return callback(null)
   }

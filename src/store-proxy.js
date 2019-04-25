@@ -14,7 +14,7 @@ module.exports = function(proxydomain){
       .set('accept', 'json')
       .end((err, res) => {
         if (err) return callback(err)
-        return callback(res.record)
+        return callback(res.body)
       })
   }
 
@@ -23,19 +23,19 @@ module.exports = function(proxydomain){
       .get(path.join(proxydomain, identifier))
       .set('accept', 'json')
       .end((err, res) => {
-        if (err) return callback(err)
+        if (res.status == 404) return callback(null)
         return callback(res.body || null)
       })
   }
 
-  store.constructor.prototype.remove = function(identifier, callback){
+  store.constructor.prototype.remove = function(identifier, record, callback){
     superagent
       .del(path.join(proxydomain, identifier))
       .send(record)
       .set('accept', 'json')
       .end((err, res) => {
-        if (err) return callback(err)
-        return callback(res.body || null)
+        if (res.status == 204) return callback(null)
+        return callback(res.body)
       })
   }
 
