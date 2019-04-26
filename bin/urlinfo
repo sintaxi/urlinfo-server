@@ -112,8 +112,8 @@ if (argv["_"].length > 0 && argv["_"][0] === "benchmark") {
 
     var bench = function(urls){
       console.log("Starting benchmark...")
-      console.log("Fetching all 100 records 1000 times each...")
-      var reqs  = 1000
+      console.log("Fetching all 100 records 100 times each...")
+      var reqs  = 100
       var count = 0
       var total = benchcount * reqs
 
