@@ -97,7 +97,7 @@ Although each instance of the `urlinfo` client/server contains an LRU cache for 
 
 `urlinfo` is architected much like DNS. Assuming the origin server is in North America the best way to expand to Europe would be to stand up a pseudo-origin server in Europe that proxies requests to North America. In addition to that it would be prudent to setup multiple `urlinfo` servers in Europe depending on volume of requests & latency to Europe origin server. Each `urlinfo` server reduces load on the origin server.
 
-#### Q. What are some strategies used to update the service with new URLs? Updates may be as much as 5 thousand URLs a day with updates arriving every 10 minutes.
+#### What are some strategies used to update the service with new URLs? Updates may be as much as 5 thousand URLs a day with updates arriving every 10 minutes.
 
 URLs can be updated with a PUT request to any of the servers at the same URL used to get the data. This makes the vaious ways to update urllist virtually endless and tooling to do so widely available.
 
