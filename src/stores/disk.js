@@ -64,7 +64,6 @@ module.exports = function(storepath, lrucount){
     get: function(id, cb){
       var record = lru.get(id)
       if (record){
-        process.stdout.write(".")
         return cb(record)
       } else {
         store.get(id, function(record){

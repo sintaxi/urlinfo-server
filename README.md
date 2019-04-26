@@ -49,7 +49,9 @@
 
     npm test
 
-For debuging include `DEBUG=urlinfo` when running from the CLI or when running the tests.
+For debuging include `DEBUG=urlinfo` when running from the CLI or when running the tests. Running the tests should show the following output...
+
+![Test output](misc/test-output.png)
 
 ## Lib
 

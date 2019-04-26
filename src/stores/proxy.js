@@ -60,11 +60,15 @@ module.exports = function(proxydomain, lrucount){
     // fetch from cache or prime the cache
     get: function(id, cb){
       var record = lru.get(id)
-      if (record) return cb(record)
-      store.get(id, function(record){
-        lru.set(id, record)
+      if (record) {
         return cb(record)
-      })
+      } else {
+        store.get(id, function(record){
+          lru.set(id, record)
+          return cb(record)
+        })  
+      }
+      
     },
 
     // set the store and prime the cache
