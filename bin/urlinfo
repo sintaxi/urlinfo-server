@@ -32,6 +32,7 @@ if (argv.help || argv.h || argv["_"].length == 0) {
   console.log("  Commands:")
   console.log("    urlinfo server <file>               http server (stores records in database)")
   console.log("    urlinfo proxy <domain>              http server (proxies records to other urlinfo API)")
+  console.log("    urlinfo benchmark <domain>          benchmarks the urlinfo server that is passed in")
   console.log()
   console.log("  Options:")
   console.log("    -p, --port (9001)                   specify port for server")
