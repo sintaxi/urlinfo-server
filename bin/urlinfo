@@ -55,14 +55,18 @@ if (argv.help || argv.h || argv["_"].length == 0) {
 if (argv["_"].length > 0 && argv["_"][0] === "server") {
   if (argv["_"][1]){
     var port = argv.port || argv.p || 9000
-    urlinfo.createClient(argv).server.listen(port, function(){
+    urlinfo.createClient({ disk: argv["_"][1] }).server.listen(port, function(){
       console.log("urlinfo -", cfg.version)
+      console.log("Records being stored on disk at:", argv["_"][1])
       console.log("Server listening on port", port, "...")
     })
   } else {
-    console.log("Path to database file required.")
-    console.log("Example: `urlinfo server ./store.db`")
-    process.exit()
+    var port = argv.port || argv.p || 9000
+    urlinfo.createClient({}).server.listen(port, function(){
+      console.log("urlinfo -", cfg.version)
+      console.log("Records being stored in memory.")
+      console.log("Server listening on port", port, "...")
+    })
   }
 }
 
@@ -76,9 +80,10 @@ if (argv["_"].length > 0 && argv["_"][0] === "server") {
 if (argv["_"].length > 0 && argv["_"][0] === "proxy") {
   if (argv["_"][1]){
     var port = argv.port || argv.p || 9000
-    urlinfo.createClient(argv).server.listen(port, function(){
+    urlinfo.createClient({ proxy: argv["_"][1] }).server.listen(port, function(){
       console.log("urlinfo -", cfg.version)
-      console.log("Proxy listening on port", port, "...")
+      console.log("Proxing all calls to:", argv["_"][1])
+      console.log("Server listening on port", port, "...")
     })
   } else {
     console.log("Domain to API required.")
