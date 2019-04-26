@@ -91,3 +91,75 @@ if (argv["_"].length > 0 && argv["_"][0] === "proxy") {
     process.exit()
   }
 }
+
+
+/***
+ *
+ * urlinfo benchmark localhost:9000
+ *
+ */
+
+if (argv["_"].length > 0 && argv["_"][0] === "benchmark") {
+  if (argv["_"][1]){
+
+    var benchcount = 100
+    var setcount = 0
+
+    console.log("Benchmarking", argv["_"][1])
+
+    var client = urlinfo.createClient({ proxy: argv["_"][1] })
+
+    var bench = function(urls){
+      console.log("Starting benchmark...")
+      console.log("Fetching all 100 records 1000 times each...")
+      var reqs  = 1000
+      var count = 0
+      var total = benchcount * reqs
+
+      // for (x = 0; x <= reqs; x++)(function(i){
+      //   urls.forEach(function(u){
+      //     client.get(u, function(record){
+      //       count++
+      //       if (count === total){
+      //         console.log("done", total, "requests")
+      //       }
+      //     })  
+      //   })
+      // })(i)
+
+    
+      for (y = 0; y <= benchcount; y++)(function(y){
+        for (x = 0; x <= reqs; x++)(function(x){
+          client.get("/" + y, function(record){
+            count++
+            if (count === total){
+              console.log("done", total, "requests")
+            }
+          })
+        })(x)
+      })(i)
+
+    }
+
+
+    console.log("Creating", benchcount, "records...")
+    var urls = []
+    for (i = 0; i < benchcount; i++)(function(i){
+      var url = "/" + i
+      urls.push(url)
+      var value = { abuse: (i % 2 === 0) } // set even records to true
+      client.set(url, value, function(){
+        setcount++
+        if (setcount === benchcount) bench(urls)
+      })
+    })(i)
+
+
+
+
+  } else {
+    console.log("Domain to benchmark required")
+    console.log("Example: `urlinfo benchmark localhost:9000`")
+    process.exit()
+  }
+}

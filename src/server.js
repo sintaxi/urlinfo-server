@@ -1,9 +1,12 @@
 
-var http = require("http")
+var http  = require("http")
+var debug = require("debug")("urlinfo")
 
 module.exports = function(store){
 
   return http.createServer(function(req, rsp){
+    //debug("API", req.method, req.url)
+
     if (req.method == "PUT"){
       
       var body = ""

@@ -63,17 +63,21 @@ module.exports = function(storepath, lrucount){
     // fetch from cache or prime the cache
     get: function(id, cb){
       var record = lru.get(id)
-      if (record) return cb(record)
-      store.get(id, function(record){
-        lru.set(id, record)
+      if (record){
+        process.stdout.write(".")
         return cb(record)
-      })
+      } else {
+        store.get(id, function(record){
+          lru.set(id, record)
+          return cb(record)
+        })  
+      }
     },
 
-    // set the store and purge from cache
+    // set the store and prime cache
     set: function(id, rec, cb){
       store.set(id, rec, function(errors, record){
-        if (!errors) lru.del(id)
+        if (!errors) lru.set(id, record)
         return cb(errors, record)
       })
     },

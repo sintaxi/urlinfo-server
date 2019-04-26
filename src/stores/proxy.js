@@ -10,7 +10,7 @@ module.exports = function(proxydomain, lrucount){
   var store = new Thug()
 
   store.constructor.prototype.write = function(identifier, record, callback){
-    debug("PROXY write", proxydomain, identifier)
+    debug("PROXY write", path.join(proxydomain, identifier))
     superagent
       .put(path.join(proxydomain, identifier))
       .send(record)
@@ -27,6 +27,7 @@ module.exports = function(proxydomain, lrucount){
       .get(path.join(proxydomain, identifier))
       .set('accept', 'json')
       .end((err, res) => {
+        if (err) return callback(null)
         if (res.status == 404) return callback(null)
         return callback(res.body || null)
       })
@@ -66,10 +67,10 @@ module.exports = function(proxydomain, lrucount){
       })
     },
 
-    // set the store and purge from cache
+    // set the store and prime the cache
     set: function(id, rec, cb){
       store.set(id, rec, function(errors, record){
-        if (!errors) lru.del(id)
+        if (!errors) lru.set(id, record)
         return cb(errors, record)
       })
     },
