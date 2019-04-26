@@ -119,8 +119,7 @@ Yes. Flags for controlling LRU size and durration should be added to CLI. Better
 
 - Managing SSL certs for the APIs (unaddressed)
 - Token management for speaking to API (unaddressed)
-- Version of nodejs. (minor concern)
-- Process management for keeping process running.
+- Changing data return object and clients that consume the data (major concern).
 - Database backups. Ability to restore with older version of dataset.
 
 #### You need to deploy new version of this application. What would you do?
