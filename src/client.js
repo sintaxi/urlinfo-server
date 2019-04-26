@@ -5,7 +5,7 @@ var memoryStore = require("./stores/memory")
 
 /**
  *
- * Client exists in multiple
+ * Client returns either a disk, memory, or proxy store.
  *
  */
 

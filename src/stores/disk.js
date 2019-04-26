@@ -3,6 +3,7 @@ var Thug      = require("thug")
 var levelup   = require('levelup')
 var leveldown = require('leveldown')
 var debug     = require("debug")("urlinfo")
+var LRU       = require("lru-cache")
 
 
 module.exports = function(storepath, lrucount){
@@ -48,28 +49,39 @@ module.exports = function(storepath, lrucount){
   }
 
   // No LRU we return the store
-  if (!lrucount) {
-    debug("DISK no LRU", lrucount)
-    return store
-  }
+  // if (!lrucount) {
+  //   debug("DISK no LRU", lrucount)
+  //   return store
+  // }
 
   // if LRU we wrap the methods
   debug("DISK with LRU", lrucount)
+  var lru = new LRU()
+
   return {
+
+    // fetch from cache or prime the cache
     get: function(id, cb){
+      var record = lru.get(id)
+      if (record) return cb(record)
       store.get(id, function(record){
+        lru.set(id, record)
         return cb(record)
       })
     },
 
+    // set the store and purge from cache
     set: function(id, rec, cb){
       store.set(id, rec, function(errors, record){
+        if (!errors) lru.del(id)
         return cb(errors, record)
       })
     },
 
+    // delete from store and delete from cache
     del: function(id, cb){
       store.del(id, function(errors){
+        if (!errors) lru.del(id)
         return cb(errors)
       })
     }

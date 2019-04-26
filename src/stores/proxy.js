@@ -2,7 +2,8 @@
 var Thug        = require("thug")
 var superagent  = require("superagent")
 var path        = require("path")
-var debug     = require("debug")("urlinfo")
+var debug       = require("debug")("urlinfo")
+var LRU         = require("lru-cache")
 
 module.exports = function(proxydomain, lrucount){
 
@@ -51,21 +52,32 @@ module.exports = function(proxydomain, lrucount){
 
   // if LRU we wrap the methods
   debug("PROXY with LRU", lrucount)
+  var lru = new LRU()
+
   return {
+
+    // fetch from cache or prime the cache
     get: function(id, cb){
+      var record = lru.get(id)
+      if (record) return cb(record)
       store.get(id, function(record){
+        lru.set(id, record)
         return cb(record)
       })
     },
 
+    // set the store and purge from cache
     set: function(id, rec, cb){
       store.set(id, rec, function(errors, record){
+        if (!errors) lru.del(id)
         return cb(errors, record)
       })
     },
 
+    // delete from store and delete from cache
     del: function(id, cb){
       store.del(id, function(errors){
+        if (!errors) lru.del(id)
         return cb(errors)
       })
     }
