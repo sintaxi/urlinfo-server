@@ -51,7 +51,7 @@
 
 For debuging include `DEBUG=urlinfo` when running from the CLI or when running the tests. Running the tests should show the following output...
 
-![Test output](misc/test-output.png)
+![Test output](misc/mocha-output.png)
 
 ## Lib
 
