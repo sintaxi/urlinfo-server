@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/sintaxi/urlinfo-server#readme",
   "dependencies": {
+    "debug": "^4.1.1",
     "leveldown": "^5.0.1",
     "levelup": "^4.0.1",
     "minimist": "^1.2.0",
