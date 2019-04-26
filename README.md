@@ -87,19 +87,19 @@ var network = urlinfo.createClient({ proxy: "https://localhost:9000" })
 
 ## FAQ
 
-##### Q. The size of the URL list could grow infinitely, how does `urlinfo` scale this beyond the memory capacity of the system?
+#### The size of the URL list could grow infinitely, how does `urlinfo` scale this beyond the memory capacity of the system?
 
 Although each instance of the `urlinfo` client/server contains an LRU cache for fast access all requests eventually resolve to an instance that reads and writes to a disk k/v store. If the origin server ever needed to change storage mechanisms all that would be required is that a new store be setup and then the previous origin store can be set to proxy requests to the new server.
 
-##### Q. Assuming that the number of requests will exceed the capacity of a single system, describe how might you solve this, and how might this change if you have to distribute this workload to an additional region, such as Europe.
+#### Assuming that the number of requests will exceed the capacity of a single system, describe how might you solve this, and how might this change if you have to distribute this workload to an additional region, such as Europe.
 
 `urlinfo` is architected much like DNS. Assuming the origin server is in North America the best way to expand to Europe would be to stand up a pseudo-origin server in Europe that proxies requests to North America. In addition to that it would be prudent to setup multiple `urlinfo` servers in Europe depending on volume of requests & latency to Europe origin server. Each `urlinfo` server reduces load on the origin server.
 
-##### Q. What are some strategies used to update the service with new URLs? Updates may be as much as 5 thousand URLs a day with updates arriving every 10 minutes.
+#### Q. What are some strategies used to update the service with new URLs? Updates may be as much as 5 thousand URLs a day with updates arriving every 10 minutes.
 
 URLs can be updated with a PUT request to any of the servers at the same URL used to get the data. This makes the vaious ways to update urllist virtually endless and tooling to do so widely available.
 
-##### Q. You’re woken up at 3am, what are some of the things you’ll look for?
+#### You’re woken up at 3am, what are some of the things you’ll look for?
 
 - Check health of processes.
 - Check DNS is resolving & SSL certs are valid.
@@ -109,11 +109,11 @@ URLs can be updated with a PUT request to any of the servers at the same URL use
 - Ensure origin server is "available" and able to read/write records.
 - Check for data integrity in the database.
 
-##### Does that change anything you’ve done in the app?
+#### Does that change anything you’ve done in the app?
 
 Yes. Flags for controlling LRU size and durration should be added to CLI. Better logging output such as http errors or errors reading/writing to disk should also be added.
 
-##### Q. What are some considerations for the lifecycle of the app?
+#### What are some considerations for the lifecycle of the app?
 
 - Managing SSL certs for the APIs (unaddressed)
 - Token management for speaking to API (unaddressed)
@@ -121,7 +121,7 @@ Yes. Flags for controlling LRU size and durration should be added to CLI. Better
 - Process management for keeping process running.
 - Database backups. Ability to restore with older version of dataset.
 
-##### You need to deploy new version of this application. What would you do?
+#### You need to deploy new version of this application. What would you do?
 
 Publish new version of `urlinfo` to npm. Run Ansible script which reaches out to all running instances and pulls latest version and triggers process restarts. Alternatively code could be pulled from git if it was a goal to avoid the npm repository.
 
