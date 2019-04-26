@@ -1,9 +1,13 @@
 
-var Thug        = require("thug")
-var proxyStore  = require("./store-proxy")
-var diskStore   = require("./store-disk")
-var memoryStore = require("./store-memory")
-var records     = {}
+var proxyStore  = require("./stores/proxy")
+var diskStore   = require("./stores/disk")
+var memoryStore = require("./stores/memory")
+
+/**
+ *
+ * Client exists in multiple
+ *
+ */
 
 module.exports = function(config){
   config = config || {}

@@ -1,7 +1,7 @@
 
 
 var should     = require("should")
-var store      = require("../src/store-disk")
+var store      = require("../src/stores/disk")
 var exec       = require("child_process").exec
 
 describe("store-disk", function(){

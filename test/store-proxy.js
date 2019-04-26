@@ -1,7 +1,7 @@
 
 
 var should     = require("should")
-var store      = require("../src/store-proxy")
+var store      = require("../src/stores/proxy")
 var exec       = require("child_process").exec
 var urlinfo    = require("../")
 
