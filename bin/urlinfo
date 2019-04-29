@@ -43,6 +43,9 @@ if (argv.help || argv.h || argv["_"].length == 0) {
   console.log("    urlinfo server store.db             starts server on port 9001. saves state in store.db")
   console.log("    urlinfo proxy example.com -p 9002   starts server on port 9002. proxies req. to example.com")
   console.log()
+  console.log("  Benchmarking Example:")
+  console.log("    urlinfo benchmark example.com --records 50 --requests 5000")
+  console.log()
   process.exit()
 }
 
@@ -102,8 +105,11 @@ if (argv["_"].length > 0 && argv["_"][0] === "proxy") {
 
 if (argv["_"].length > 0 && argv["_"][0] === "benchmark") {
   if (argv["_"][1]){
+    var testRecords  = argv.records  || 10
+    var testRequests = argv.requests || 1000
 
-    var benchcount = 100
+
+    var benchcount = 50
     var setcount = 0
 
     console.log("Benchmarking", argv["_"][1])
@@ -111,56 +117,68 @@ if (argv["_"].length > 0 && argv["_"][0] === "benchmark") {
     var client = urlinfo.createClient({ proxy: argv["_"][1] })
 
     var bench = function(urls){
-      console.log("Starting benchmark...")
-      console.log("Fetching all 100 records 100 times each...")
-      var reqs  = 100
+      var reqs  = 50000
       var count = 0
-      var total = benchcount * reqs
-
-      // for (x = 0; x <= reqs; x++)(function(i){
-      //   urls.forEach(function(u){
-      //     client.get(u, function(record){
-      //       count++
-      //       if (count === total){
-      //         console.log("done", total, "requests")
-      //       }
-      //     })  
-      //   })
-      // })(i)
-
-    
-      for (y = 0; y <= benchcount; y++)(function(y){
-        for (x = 0; x <= reqs; x++)(function(x){
-          client.get("/" + y, function(record){
-            count++
-            if (count === total){
-              console.log("done", total, "requests")
-            }
+      var total = testRecords * testRequests
+      var readFns = []
+      
+      for (y = 1; y <= testRecords; y++)(function(y){
+        for (x = 1; x <= testRequests; x++)(function(x){
+          readFns.push(function(next){
+            client.get("/" + y, function(record){
+              next(null, record)
+            })
           })
         })(x)
-      })(i)
+      })(y)
+
+      console.log("Benchmarking all", testRecords, "urls", testRequests, "times each...")
+      var index = 0;
+      var start = new Date()
+      function n(){
+        var read = readFns[index++]
+        if(!read) {
+          var end = new Date() - start
+          console.log("Done! Performed", testRecords * testRequests, "lookups in", end + "ms")
+        } else {
+          read.call(null, n)  
+        }
+      }
+      n()
 
     }
 
-
-    console.log("Creating", benchcount, "records...")
-    var urls = []
-    for (i = 0; i < benchcount; i++)(function(i){
-      var url = "/" + i
-      urls.push(url)
-      var value = { abuse: (i % 2 === 0) } // set even records to true
-      client.set(url, value, function(){
-        setcount++
-        if (setcount === benchcount) bench(urls)
+    
+    var writeFns = []
+    for (i = 1; i <= testRecords; i++)(function(i){
+      writeFns.push(function(next){
+        var url = "/" + i
+        var value = { abuse: (i % 2 === 0) }
+        client.set(url, value, function(){
+          next()
+        })
       })
     })(i)
 
-
+    console.log("Creating", testRecords, "records...")
+    var s = new Date()
+    var index = 0;
+    function next(){
+      var layer = writeFns[index++]
+      if(!layer) {
+        var e = new Date() - s
+        console.log("Done! Performed", testRecords, "writes in", e + "ms")
+        bench()
+      }else {
+        layer.call(this, next)
+      }
+    }
+    next()
 
 
   } else {
     console.log("Domain to benchmark required")
-    console.log("Example: `urlinfo benchmark localhost:9000`")
+    console.log("Example: `urlinfo benchmark localhost:9000 --records 50 --requests 10000`")
     process.exit()
   }
 }

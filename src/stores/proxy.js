@@ -61,7 +61,9 @@ module.exports = function(proxydomain, lrucount){
     get: function(id, cb){
       var record = lru.get(id)
       if (record) {
-        return cb(record)
+        process.nextTick(function(){
+          return cb(record)
+        })
       } else {
         store.get(id, function(record){
           lru.set(id, record)
