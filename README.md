@@ -12,12 +12,24 @@
 
     npm install -g urlinfo-server
 
+## Start Server
+
+    urlinfo server store.db --port 9000
+
+## Start Proxy
+
+    urlinfo proxy localhost:9000 --port 9001
+
+## Benchmark
+
+    urlinfo benchmark localhost:9001 --records 50 --requests 10000
+
 ## CLI
 
 `urlinfo` ships with a CLI that makes starting servers easy. Servers can talk to disk or proxy calls to an http endpoint providing flexability to have servers stood up in multiple locations. All servers are a client under the hood so they all save disk or network calls by using a built in LRU cache.
 
 ```  
-  urlinfo - 0.5.0
+  urlinfo - 0.6.0
   Service for storing and fetching url information.
 
   Commands:

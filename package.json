@@ -1,6 +1,6 @@
 {
   "name": "urlinfo-server",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "url information for fighting abuse etc.",
   "main": "./src/index.js",
   "scripts": {
