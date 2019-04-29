@@ -1,10 +1,17 @@
 
 var Thug       = require("thug")
 var records    = {}
+var pkg        = require("../../package.json")
 
 module.exports = function(){
 
-  var store = new Thug()
+  var store = new Thug({
+    filters: {
+      out : [function(record, next){
+        record.version = pkg.version
+        next(record)
+      }]
+    }})
 
   store.constructor.prototype.write = function(identifier, record, callback){
     records[identifier] = record

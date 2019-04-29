@@ -4,6 +4,7 @@ var levelup   = require('levelup')
 var leveldown = require('leveldown')
 var debug     = require("debug")("urlinfo")
 var LRU       = require("lru-cache")
+var pkg       = require("../../package.json")
 
 
 module.exports = function(storepath, lrucount){
@@ -20,6 +21,9 @@ module.exports = function(storepath, lrucount){
       // database returns a string so we parse
       out : [function(record, next){
         next(JSON.parse(record))
+      },function(record, next){
+        record.version = pkg.version
+        next(record)
       }]
     } 
   })
